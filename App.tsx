@@ -1,20 +1,25 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { SafeAreaProvider } from "react-native-safe-area-context"
+import { NavigationContainer } from "@react-navigation/native"
+import AppNavigator from "./src/navigators/AppNavigator"
+import { Provider } from "react-redux"
+import { PersistGate } from "redux-persist/integration/react"
+import { persistor, store } from "./src/redux/store"
+import "react-native-reanimated"
+import { Text } from "react-native"
+import { Root } from "react-native-alert-notification"
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    <SafeAreaProvider>
+      <Root toastConfig={{ autoClose: 3000 }}>
+        <Provider store={store}>
+          <PersistGate loading={<Text>Loading...</Text>} persistor={persistor}>
+            <NavigationContainer>
+              <AppNavigator />
+            </NavigationContainer>
+          </PersistGate>
+        </Provider>
+      </Root>
+    </SafeAreaProvider>
+  )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
